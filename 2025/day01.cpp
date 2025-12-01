@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/01 07:30:05      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/01 08:17:57     #########  #########  ###      ###      */
+/*   Updated: 2025/12/01 09:31:22     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ int	 main(int argc, char **argv)
 	}
 
 	part_one(file);
+	file.clear();
+	file.seekg(0, std::ios::beg);
+	part_two(file);
 
 	dprint("");
 	dprint("End of main()");
@@ -44,7 +47,54 @@ int	 main(int argc, char **argv)
 
 void part_two(std::ifstream &file)
 {
-	(void) file;
+	int			 pos   = INITIAL_POS;
+	unsigned int count = 0;
+	dprint("Initial position: " << pos);
+	std::string input_line;
+	while (std::getline(file, input_line))
+	{
+		// dprint("Read line: " << input_line);
+		if (input_line[0] == 'R')
+		{
+			// dprint("Rotating right");
+			input_line = input_line.substr(1);
+			dprint("Rotating right " << input_line << " times");
+			pos += std::atoi(input_line.c_str());
+		}
+		else
+		{
+			// dprint("Rotating left");
+			input_line = input_line.substr(1);
+			dprint("Rotating left " << input_line << " times");
+			if (pos == 0)
+			{
+				--count;
+			}
+			pos -= std::atoi(input_line.c_str());
+		}
+		if (pos == 0)
+		{
+			++count;
+		}
+		while (pos >= 100)
+		{
+			pos -= 100;
+			++count;
+		}
+		while (pos < 0)
+		{
+			pos += 100;
+			++count;
+			if (pos == 0)
+			{
+				++count;
+			}
+		}
+
+		dprint("Current position: " << pos << " count: " << count);
+	}
+
+	std::cout << "Part two: Password: " << count << "\n";
 }
 
 void part_one(std::ifstream &file)
@@ -111,7 +161,6 @@ bool input_validation(int argc, char **argv, std::ifstream &file)
 		return (EXIT_FAILURE);
 	}
 	dprint(INPUT_FILE << " is good");
-	dprint("");
 
 	return (EXIT_SUCCESS);
 }
