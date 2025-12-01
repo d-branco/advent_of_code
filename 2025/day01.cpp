@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/01 07:30:05      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/01 09:31:22     #########  #########  ###      ###      */
+/*   Updated: 2025/12/01 13:22:39     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 
 #define INPUT_FILE	argv[1]
 #define INITIAL_POS 50
+#define DIAL_DIV	100
 
-bool input_validation(int argc, char **argv, std::ifstream &file);
+int	 input_validation(int argc, char **argv, std::ifstream &file);
 void part_one(std::ifstream &file);
 void part_two(std::ifstream &file);
 
@@ -30,7 +31,7 @@ int	 main(int argc, char **argv)
 {
 	dprint("Debug mode activated");
 	std::ifstream file(INPUT_FILE);
-	if (input_validation(argc, argv, file))
+	if (input_validation(argc, argv, file) != 0)
 	{
 		return (EXIT_FAILURE);
 	}
@@ -76,14 +77,14 @@ void part_two(std::ifstream &file)
 		{
 			++count;
 		}
-		while (pos >= 100)
+		while (pos >= DIAL_DIV)
 		{
-			pos -= 100;
+			pos -= DIAL_DIV;
 			++count;
 		}
 		while (pos < 0)
 		{
-			pos += 100;
+			pos += DIAL_DIV;
 			++count;
 			if (pos == 0)
 			{
@@ -120,13 +121,13 @@ void part_one(std::ifstream &file)
 			dprint("Rotating left " << input_line << " times");
 			pos -= std::atoi(input_line.c_str());
 		}
-		while (pos >= 100)
+		while (pos >= DIAL_DIV)
 		{
-			pos -= 100;
+			pos -= DIAL_DIV;
 		}
 		while (pos < 0)
 		{
-			pos += 100;
+			pos += DIAL_DIV;
 		}
 		if (pos == 0)
 		{
@@ -138,7 +139,7 @@ void part_one(std::ifstream &file)
 	std::cout << "Part one: Password: " << count << "\n";
 }
 
-bool input_validation(int argc, char **argv, std::ifstream &file)
+int input_validation(int argc, char **argv, std::ifstream &file)
 {
 	dprint("");
 	if (argc == 1)

@@ -5,7 +5,7 @@
 #    github.com/d-branco                    +#+         +#+      +#+#+#+       #
 #                                        +#+         +#+              +#+      #
 #    Created: 2025/07/08 21:04:23      #+#         #+#      +#+        #+#     #
-#    Updated: 2025/12/01 08:16:02     #########  #########  ###      ###       #
+#    Updated: 2025/12/01 13:18:31     #########  #########  ###      ###       #
 #                                                             ########         #
 #  **************************************************************************  #
 
@@ -14,7 +14,7 @@ NAME			:= day01.out
 FORMATABLE		= $(HEADERS) $(SRCS)
 
 TEST_RUN		= $(NAME) test01
-#TEST_RUN		= $(NAME) input01
+# TEST_RUN		= $(NAME) input01
 
 ########################################################## Objects and Headers #
 HEADERS			:=															\
@@ -384,11 +384,18 @@ PURPLE	:= \033[1;35m
 GRAY	:= \033[1;90m
 YELLOW	:= \033[1;93m
 BLUE	:= \033[1;96m
+######################################################################### Time #
+time: $(NAME)
+	time -f "  Total time: %E " ./$(TEST_RUN)
+
+define TIMED_RUN
+time -f "==DEBUG== Total time: %E " 
+endef
 ##################################################################### Valgrind #
 valgrind: $(NAME)
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	valgrind ./$(TEST_RUN)"			; \
-	$(VALGRIND_CMD) ./$(TEST_RUN) $(VALGRIND_FILTER)
+	echo "$(GRAY)Executing arg:$(COR)	time valgrind ./$(TEST_RUN)"		; \
+	$(TIMED_RUN) $(VALGRIND_CMD) ./$(TEST_RUN) $(VALGRIND_FILTER)
 
 VALGRIND_CMD = valgrind \
 	--track-fds=yes \
@@ -439,8 +446,8 @@ test: check-guards clang-check fclean headers $(NAME)
 
 exe: headers format fclean $(NAME) 
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
-	./$(TEST_RUN)
+	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)" 					;\
+	$(TIMED_RUN) ./$(TEST_RUN) 
 
 run: $(NAME)
 	@\
@@ -460,7 +467,7 @@ debug: CFLAGS += $(DEBUG_FLAGS)
 debug: fclean headers format $(NAME) 
 	@\
 	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
-	./$(TEST_RUN) $(DEBUG_FILTER)
+	$(TIMED_RUN) ./$(TEST_RUN) $(DEBUG_FILTER)
 
 gprof: CFLAGS += $(GPROF_FLAGS)
 gprof: fclean headers $(NAME)
@@ -506,8 +513,8 @@ homevalgrind: fclean headers format $(NAME)
 line: CFLAGS += $(DEBUG_FLAGS)
 line: fclean format headers $(NAME) 
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
-	$(VALGRIND_CMD) ./$(TEST_RUN) 2>&1 | while IFS= read -r line; do \
+	echo "$(GRAY)Executing arg:$(COR)	time ./$(TEST_RUN)"					; \
+	$(TIMED_RUN) $(VALGRIND_CMD) ./$(TEST_RUN) 2>&1 | while IFS= read -r line; do \
 		case "$$line" in \
 			*==DEBUG==*) printf '\033[33m%-80s \033[0m\n' "$$line" ; sleep 0.01 ;; \
 			*==*[Cc]opyright*) ;; \
