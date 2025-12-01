@@ -1,5 +1,5 @@
 # Input files
-input*.h
+input*
 
 # Prerequisites
 *.d
