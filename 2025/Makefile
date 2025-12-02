@@ -5,7 +5,7 @@
 #    github.com/d-branco                    +#+         +#+      +#+#+#+       #
 #                                        +#+         +#+              +#+      #
 #    Created: 2025/07/08 21:04:23      #+#         #+#      +#+        #+#     #
-#    Updated: 2025/12/02 09:47:36     #########  #########  ###      ###       #
+#    Updated: 2025/12/02 12:25:40     #########  #########  ###      ###       #
 #                                                             ########         #
 #  **************************************************************************  #
 
@@ -13,8 +13,8 @@ NAME			= day$(DAY).out
 
 FORMATABLE		= $(HEADERS) $(SRCS)
 
-TEST_RUN		= $(NAME) test$(DAY)
-# TEST_RUN		= $(NAME) input$(DAY)
+# TEST_RUN		= $(NAME) test$(DAY)
+TEST_RUN		= $(NAME) input$(DAY)
 # TEST_RUN		= $(NAME) input$(DAY)_small
 
 DAY				:= $(shell date +%d)

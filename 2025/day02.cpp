@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/02 06:44:08      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/02 10:55:29     #########  #########  ###      ###      */
+/*   Updated: 2025/12/02 12:49:04     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void part_one(std::ifstream &file)
 			for (unsigned int k = (nbr_str.length() - 1); k >= 1; k--)
 			{
 				if (((nbr_str.length() % k) != 0)
-					|| (nbr_str.length() % 2 != 0))
+					|| (((nbr_str.length() / k) % 2) != 0))
 				{
 					continue;
 				}
@@ -118,12 +118,12 @@ void part_one(std::ifstream &file)
 						break;
 					}
 				}
-				if (compare)
+				if ((compare))
 				{
-					dprint("Sequence found to be INVALID! (size: "
-						   << k << ") iteration: [" << ite << "]");
 					adding_all += ite;
-					dprint("Sum: " << adding_all);
+					dprint("Sequence found to be INVALID! (size: "
+						   << k << ") iteration: [" << ite
+						   << "] Sum: " << adding_all);
 					invalid = true;
 
 					break;
