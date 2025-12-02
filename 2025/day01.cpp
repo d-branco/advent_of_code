@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/01 07:30:05      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/01 13:22:39     #########  #########  ###      ###      */
+/*   Updated: 2025/12/02 06:43:54     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@
 # define dprint(msg) ((void) 0)
 #endif
 
-#define INPUT_FILE	argv[1]
-#define INITIAL_POS 50
-#define DIAL_DIV	100
+#define INPUT_FILE argv[1]
+const int INITIAL_POS = 50;
+const int DIAL_DIV	  = 100;
 
-int	 input_validation(int argc, char **argv, std::ifstream &file);
-void part_one(std::ifstream &file);
-void part_two(std::ifstream &file);
+int		  input_validation(int argc, char **argv, std::ifstream &file);
+void	  part_one(std::ifstream &file);
+void	  part_two(std::ifstream &file);
 
-int	 main(int argc, char **argv)
+int		  main(int argc, char **argv)
 {
 	dprint("Debug mode activated");
 	std::ifstream file(INPUT_FILE);
@@ -52,7 +52,7 @@ void part_two(std::ifstream &file)
 	unsigned int count = 0;
 	dprint("Initial position: " << pos);
 	std::string input_line;
-	while (std::getline(file, input_line))
+	while (std::getline(file, input_line) != 0)
 	{
 		// dprint("Read line: " << input_line);
 		if (input_line[0] == 'R')
@@ -104,7 +104,7 @@ void part_one(std::ifstream &file)
 	unsigned int count = 0;
 	dprint("Initial position: " << pos);
 	std::string input_line;
-	while (std::getline(file, input_line))
+	while (std::getline(file, input_line) != 0)
 	{
 		// dprint("Read line: " << input_line);
 		if (input_line[0] == 'R')

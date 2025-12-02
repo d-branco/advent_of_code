@@ -1,0 +1,111 @@
+/* ************************************************************************** */
+/*                                          ::::::::    ::::::::   :::::::::  */
+/*   day02.cpp                            :+:    :+:  :+:    :+:  :+:         */
+/*                                             +:+         :+:   :+:          */
+/*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
+/*                                       +#+         +#+              +#+     */
+/*   Created: 2025/12/02 06:44:08      #+#         #+#      +#+        #+#    */
+/*   Updated: 2025/12/02 07:39:43     #########  #########  ###      ###      */
+/*                                                            ########        */
+/* ************************************************************************** */
+
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
+#ifdef DEBUG
+# define dprint(msg) std::cout << "==DEBUG== " << msg << "\n"
+#else
+# define dprint(msg) ((void) 0)
+#endif
+
+#define INPUT_FILE argv[1]
+const int INITIAL_POS = 50;
+const int DIAL_DIV	  = 100;
+
+int		  input_validation(int argc, char **argv, std::ifstream &file);
+void	  part_one(std::ifstream &file);
+void	  part_two(std::ifstream &file);
+
+int		  main(int argc, char **argv)
+{
+	dprint("Debug mode activated");
+	std::ifstream file(INPUT_FILE);
+	if (input_validation(argc, argv, file) != 0)
+	{
+		return (EXIT_FAILURE);
+	}
+	dprint("");
+
+	part_one(file);
+	file.clear();
+	file.seekg(0, std::ios::beg);
+	part_two(file);
+
+	dprint("");
+	dprint("End of main()");
+	return (EXIT_SUCCESS);
+}
+
+void part_two(std::ifstream &file)
+{
+	(void) file;
+}
+
+void part_one(std::ifstream &file)
+{
+	std::string line;
+	std::getline(file, line);
+	// dprint("Input file content: " << line);
+
+	std::istringstream ss_line(line);
+	std::string		   range_str;
+	unsigned int	   first;
+	unsigned int	   last;
+	std::string		   id_str;
+	while (getline(ss_line, range_str, ','))
+	{
+		// dprint("Range: " << range_str);
+		std::istringstream ss_range(range_str);
+		getline(ss_range, id_str, '-');
+		first = std::atoi(id_str.c_str());
+		// dprint("First element: " << first);
+		getline(ss_range, id_str);
+		last = std::atoi(id_str.c_str());
+		dprint("First element: " << first << " Last element: " << last);
+
+		for (unsigned int ite = first; ite <= last; ite++)
+		{
+			dprint("Inside range: " << ite);
+		}
+	}
+
+	(void) file;
+}
+
+int input_validation(int argc, char **argv, std::ifstream &file)
+{
+	dprint("");
+	if (argc == 1)
+	{
+		std::cout << "Error: Missing input \nUsage: \n  ./dayXX input\n";
+		return (EXIT_FAILURE);
+	}
+	if (argc > 2)
+	{
+		std::cout << "Error: Too many arguments \nUsage: \n  ./dayXX input\n";
+		return (EXIT_FAILURE);
+	}
+	dprint("Input file: " << INPUT_FILE);
+
+	dprint("Checking if file exists and is readable");
+	if (!file.good())
+	{
+		std::cout << "Error: Could nor access file " << INPUT_FILE << "\n";
+		return (EXIT_FAILURE);
+	}
+	dprint(INPUT_FILE << " is good");
+
+	return (EXIT_SUCCESS);
+}

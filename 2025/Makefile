@@ -5,23 +5,24 @@
 #    github.com/d-branco                    +#+         +#+      +#+#+#+       #
 #                                        +#+         +#+              +#+      #
 #    Created: 2025/07/08 21:04:23      #+#         #+#      +#+        #+#     #
-#    Updated: 2025/12/01 13:18:31     #########  #########  ###      ###       #
+#    Updated: 2025/12/02 06:51:16     #########  #########  ###      ###       #
 #                                                             ########         #
 #  **************************************************************************  #
 
-NAME			:= day01.out
+NAME			= day$(DAY).out
 
 FORMATABLE		= $(HEADERS) $(SRCS)
 
-TEST_RUN		= $(NAME) test01
-# TEST_RUN		= $(NAME) input01
+TEST_RUN		= $(NAME) test$(DAY)
+# TEST_RUN		= $(NAME) input$(DAY)
 
+DAY				:= $(shell date +%d)
 ########################################################## Objects and Headers #
-HEADERS			:=															\
+HEADERS			=															\
 
-SRCS			:=															\
+SRCS			=															\
 	\
-	day01.cpp
+	day$(DAY).cpp
 
 OBJS 			:= $(SRCS:/%.cpp=$(BUILD_DIR)/%.o)
 
@@ -389,7 +390,7 @@ time: $(NAME)
 	time -f "  Total time: %E " ./$(TEST_RUN)
 
 define TIMED_RUN
-time -f "==DEBUG== Total time: %E " 
+time -f "==CRONO== Total time: %E " 
 endef
 ##################################################################### Valgrind #
 valgrind: $(NAME)
@@ -446,7 +447,7 @@ test: check-guards clang-check fclean headers $(NAME)
 
 exe: headers format fclean $(NAME) 
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)" 					;\
+	echo "$(GRAY)Executing arg:$(COR)	time ./$(TEST_RUN)" 			;\
 	$(TIMED_RUN) ./$(TEST_RUN) 
 
 run: $(NAME)
@@ -466,7 +467,7 @@ endef
 debug: CFLAGS += $(DEBUG_FLAGS)
 debug: fclean headers format $(NAME) 
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
+	echo "$(GRAY)Executing arg:$(COR)	time ./$(TEST_RUN)"				; \
 	$(TIMED_RUN) ./$(TEST_RUN) $(DEBUG_FILTER)
 
 gprof: CFLAGS += $(GPROF_FLAGS)
@@ -489,24 +490,24 @@ define CLEANUP_HOME
 endef
 homerun: fclean headers format $(NAME)
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
+	echo "$(GRAY)Executing arg:$(COR)	time ./$(TEST_RUN)"				; \
 	$(RUN_IN_HOME) 														; \
-	~/$(TEST_RUN) 														; \
+	$(TIMED_RUN) ~/$(TEST_RUN) 											; \
 	$(CLEANUP_HOME)
 
 homedebug: CFLAGS += $(DEBUG_FLAGS)
 homedebug: fclean headers format $(NAME)
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
+	echo "$(GRAY)Executing arg:$(COR)	time ./$(TEST_RUN)"				; \
 	$(RUN_IN_HOME) 														; \
-	~/$(TEST_RUN) $(DEBUG_FILTER) 										; \
+$(TIMED_RUN) 	~/$(TEST_RUN) $(DEBUG_FILTER) 							; \
 	$(CLEANUP_HOME)
 
 homevalgrind: fclean headers format $(NAME)
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
+	echo "$(GRAY)Executing arg:$(COR)	time ./$(TEST_RUN)"				; \
 	$(RUN_IN_HOME) 														; \
-	$(VALGRIND_CMD) ~/$(TEST_RUN) $(VALGRIND_FILTER)					; \
+	$(TIMED_RUN) $(VALGRIND_CMD) ~/$(TEST_RUN) $(VALGRIND_FILTER)		; \
 	$(CLEANUP_HOME)
 
 ######################################################################### Line #
@@ -532,9 +533,9 @@ line: fclean format headers $(NAME)
 homeline: CFLAGS += $(DEBUG_FLAGS)
 homeline: fclean format headers $(NAME)
 	@\
-	echo "$(GRAY)Executing arg:$(COR)	./$(TEST_RUN)"					; \
+	echo "$(GRAY)Executing arg:$(COR)	time ./$(TEST_RUN)"					; \
 	$(RUN_IN_HOME); \
-	~/$(TEST_RUN) 2>&1 | while IFS= read -r line; do \
+	$(TIMED_RUN) ~/$(TEST_RUN) 2>&1 | while IFS= read -r line; do \
 		case "$$line" in \
 			*==DEBUG==*) printf '\033[33m%-80s \033[0m\n' "$$line" ; sleep 0.01 ;; \
 			*==*[Cc]opyright*) ;; \
