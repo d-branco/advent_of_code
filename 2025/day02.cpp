@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/02 06:44:08      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/02 09:19:09     #########  #########  ###      ###      */
+/*   Updated: 2025/12/02 10:55:29     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void part_one(std::ifstream &file)
 	std::string line;
 	std::getline(file, line);
 	// dprint("Input file content: " << line);
-
+	unsigned long	   adding_all = 0;
 	std::istringstream ss_line(line);
 	std::string		   range_str;
 	unsigned int	   first;
@@ -75,35 +75,76 @@ void part_one(std::ifstream &file)
 		last = std::atoi(id_str.c_str());
 		dprint("First element: " << first << " Last element: " << last);
 
+		bool invalid = false;
 		for (unsigned int ite = first; ite <= last; ite++)
 		{
-			dprint("Inside range: " << ite);
+			// dprint("Inside range: " << ite);
 
-			// gettinf char from int
 			std::stringstream ss_nbr;
 			ss_nbr << ite;
 			std::string nbr_str = ss_nbr.str();
+			std::string comp;
 			for (unsigned int k = (nbr_str.length() - 1); k >= 1; k--)
 			{
-				if ((nbr_str.length() % k) != 0)
+				if (((nbr_str.length() % k) != 0)
+					|| (nbr_str.length() % 2 != 0))
 				{
 					continue;
 				}
-				dprint("TESTE: Sequence size: " << k << " repeats "
-												<< (nbr_str.length() / k)
-												<< " times");
+
+				// dprint("TESTE: Sequence size: " << k << " repeats "
+				// 								<< (nbr_str.length() / k)
+				// 								<< " times");
+				bool compare = true;
 				for (unsigned int m = 0; m < nbr_str.length(); m += k)
 				{
-					dprint("TESTE: Sequence: " << nbr_str.substr(m, k));
+					if (m == 0)
+					{
+						comp = nbr_str.substr(0, k);
+						// dprint("TESTE: Sequence for comparisson: "
+						// 	   << nbr_str.substr(0, k));
+					}
+					if (comp == nbr_str.substr(m, k))
+					{
+						// dprint("Sequence: " << nbr_str.substr(m, k)
+						// 					<< " is similar");
+					}
+					else
+					{
+						// dprint("Sequence: " << nbr_str.substr(m, k)
+						// 					<< " does not compare to " << comp);
+						compare = false;
+
+						break;
+					}
+				}
+				if (compare)
+				{
+					dprint("Sequence found to be INVALID! (size: "
+						   << k << ") iteration: [" << ite << "]");
+					adding_all += ite;
+					dprint("Sum: " << adding_all);
+					invalid = true;
+
+					break;
 				}
 			}
-			dprint("");
-			//
+			// dprint("");
+		}
+		if (invalid)
+		{
+			// dprint("Range from: " << first << " to: " << last
+			// 					  << " is INVALID Sum: " << adding_all);
+		}
+		else
+		{
+			// dprint("Range from: " << first << " to: " << last
+			// 					  << " is valid Sum: " << adding_all);
 		}
 		dprint("");
 	}
 
-	(void) file;
+	std::cout << "Sum: " << adding_all << "\n";
 }
 
 int input_validation(int argc, char **argv, std::ifstream &file)
