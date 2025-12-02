@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/02 06:44:08      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/02 07:39:43     #########  #########  ###      ###      */
+/*   Updated: 2025/12/02 09:19:09     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -78,7 +78,29 @@ void part_one(std::ifstream &file)
 		for (unsigned int ite = first; ite <= last; ite++)
 		{
 			dprint("Inside range: " << ite);
+
+			// gettinf char from int
+			std::stringstream ss_nbr;
+			ss_nbr << ite;
+			std::string nbr_str = ss_nbr.str();
+			for (unsigned int k = (nbr_str.length() - 1); k >= 1; k--)
+			{
+				if ((nbr_str.length() % k) != 0)
+				{
+					continue;
+				}
+				dprint("TESTE: Sequence size: " << k << " repeats "
+												<< (nbr_str.length() / k)
+												<< " times");
+				for (unsigned int m = 0; m < nbr_str.length(); m += k)
+				{
+					dprint("TESTE: Sequence: " << nbr_str.substr(m, k));
+				}
+			}
+			dprint("");
+			//
 		}
+		dprint("");
 	}
 
 	(void) file;
