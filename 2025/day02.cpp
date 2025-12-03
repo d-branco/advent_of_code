@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/02 06:44:08      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/02 12:49:04     #########  #########  ###      ###      */
+/*   Updated: 2025/12/02 19:19:42     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@
 #endif
 
 #define INPUT_FILE argv[1]
-const int INITIAL_POS = 50;
-const int DIAL_DIV	  = 100;
 
-int		  input_validation(int argc, char **argv, std::ifstream &file);
-void	  part_one(std::ifstream &file);
-void	  part_two(std::ifstream &file);
+int	 input_validation(int argc, char **argv, std::ifstream &file);
+void part_one(std::ifstream &file);
+void part_two(std::ifstream &file);
 
-int		  main(int argc, char **argv)
+int	 main(int argc, char **argv)
 {
 	dprint("Debug mode activated");
 	std::ifstream file(INPUT_FILE);
