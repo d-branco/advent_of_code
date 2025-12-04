@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/04 05:50:07      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/04 06:38:19     #########  #########  ###      ###      */
+/*   Updated: 2025/12/04 07:26:14     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -39,20 +39,207 @@ int	 main(int argc, char **argv)
 	file.clear();
 	file.seekg(0, std::ios::beg);
 	part_two(file);
+	file.close();
 
 	dprint("");
 	dprint("End of main()");
 	return (EXIT_SUCCESS);
 }
 
+// make re; ./day04.out input04; while :; do  cat P2 ; cat P2 > test ;
+// ./day04.out test ; sleep 1; done grep -o '@' input04 |wc -l;grep -o '@' test
+// |wc -l
 void part_two(std::ifstream &file)
 {
-	(void) file;
+	std::ofstream File2("P2");
+
+	int			  count = 0;
+	// first line
+	std::string	  first;
+	std::string	  second;
+	std::getline(file, first);
+	std::getline(file, second);
+
+	dprint("First:  " << first);
+	dprint("Second: " << second);
+	size_t i	= 0;
+	int	   surr = 0;
+	if (first[i] == '@')
+	{
+		count++;
+		first[i] = '.';
+		dprint("Found at position: " << i);
+	}
+	while (i < first.size() - 1)
+	{
+		i++;
+		if (first[i] != '@')
+		{
+			continue;
+		}
+		surr = 0;
+		if (first[i - 1] == '@')
+		{
+			surr++;
+		}
+		if (first[i + 1] == '@')
+		{
+			surr++;
+		}
+		if (second[i] == '@')
+		{
+			surr++;
+		}
+		if (second[i - 1] == '@')
+		{
+			surr++;
+		}
+		if (second[i + 1] == '@')
+		{
+			surr++;
+		}
+		if (surr < 4)
+		{
+			count++;
+			first[i] = '.';
+			dprint("Found at position: " << i);
+		}
+	}
+	File2 << first << "\n";
+	file.clear();
+	file.seekg(0, std::ios::beg);
+	dprint("Count: " << count);
+	dprint("");
+
+	// midle line
+	std::getline(file, first);
+	std::getline(file, second);
+	std::string third;
+	while (getline(file, third) != 0)
+	{
+		if (third.size() < 1)
+		{
+			break;
+		}
+		dprint("First:  " << first);
+		dprint("Second: " << second);
+		dprint("Third:  " << third);
+		i = 0;
+		while (i < second.size())
+		{
+			if (second[i] != '@')
+			{
+				i++;
+				continue;
+			}
+			surr = 0;
+			if ((i > 0) && (second[i - 1] == '@'))
+			{
+				surr++;
+			}
+			if (second[i + 1] == '@')
+			{
+				surr++;
+			}
+
+			if (first[i] == '@')
+			{
+				surr++;
+			}
+			if ((i > 0) && (first[i - 1] == '@'))
+			{
+				surr++;
+			}
+			if (first[i + 1] == '@')
+			{
+				surr++;
+			}
+
+			if (third[i] == '@')
+			{
+				surr++;
+			}
+			if ((i > 0) && (third[i - 1] == '@'))
+			{
+				surr++;
+			}
+			if (third[i + 1] == '@')
+			{
+				surr++;
+			}
+			if (surr < 4)
+			{
+				count++;
+				second[i] = '.';
+				dprint("Found at position: " << i);
+			}
+			i++;
+		}
+		File2 << second.c_str() << "\n";
+		dprint("Count: " << count);
+		first  = second;
+		second = third;
+		dprint("");
+	}
+
+	// end line
+	i	 = 0;
+	surr = 0;
+	if (second[i] == '@')
+	{
+		count++;
+		second[i] = '.';
+		dprint("Found at position: " << i);
+	}
+	while (i < second.size() - 1)
+	{
+		i++;
+		if (second[i] != '@')
+		{
+			continue;
+		}
+		surr = 0;
+		if (second[i - 1] == '@')
+		{
+			surr++;
+		}
+		if (second[i + 1] == '@')
+		{
+			surr++;
+		}
+		if (first[i] == '@')
+		{
+			surr++;
+		}
+		if (first[i - 1] == '@')
+		{
+			surr++;
+		}
+		if (first[i + 1] == '@')
+		{
+			surr++;
+		}
+		if (surr < 4)
+		{
+			count++;
+			second[i] = '.';
+			dprint("Found at position: " << i);
+		}
+	}
+
+	File2 << second.c_str() << "\n";
+	File2.close();
+
+	file.clear();
+	file.seekg(0, std::ios::beg);
+
+	dprint("Count: " << count);
+	dprint("");
+	std::cout << "Part two: Number of rolls: " << count << "\n";
 }
 
 void part_one(std::ifstream &file)
 {
-	(void) file;
 	int			count = 0;
 	// first line
 	std::string first;
