@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/05 06:47:03      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/05 08:22:46     #########  #########  ###      ###      */
+/*   Updated: 2025/12/05 09:37:35     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -146,15 +146,14 @@ void part_one(std::ifstream &file)
 		unsigned long i = 0;
 		while (i < id2.size())
 		{
-			// dprint("Checking id: " << id2[i] << " (between " << start << "
-			// and "
-			// 					   << end << ")");
 			if ((id2[i] >= start && id2[i] <= end))
 			{
 				for (long long j = start; j <= end; j++)
 				{
+					dprint("Adding: " << j);
 					unique_ids.insert(j);
 				}
+				dprint("Added rages from " << start << " and " << end);
 				range = end - start + 1;
 				dprint("Range: " << range);
 				break;
