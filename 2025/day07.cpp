@@ -5,13 +5,14 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/07 06:23:14      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/07 07:01:10     #########  #########  ###      ###      */
+/*   Updated: 2025/12/07 07:29:36     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 #ifdef DEBUG
 # define dprint(msg) std::cout << "==DEBUG== " << msg << "\n"
@@ -48,7 +49,68 @@ int	 main(int argc, char **argv)
 
 void part_two(std::ifstream &file)
 {
-	(void) file;
+	size_t		count = 0;
+
+	std::string line;
+	getline(file, line);
+	dprint("Line   Width: " << line.size());
+	std::vector<size_t> mem(line.size());
+
+	size_t				i = 0;
+	while (i < line.size())
+	{
+		if (line[i] == 'S')
+		{
+			dprint("Start found!");
+			mem[i] = 1;
+			dprint("");
+			// dprint("Output: " << line);
+		}
+		mem[i] = 0;
+		i++;
+	}
+
+	while (getline(file, line))
+	{
+		i = 0;
+		while (i < line.size())
+		{
+			if ((mem[i] != 0) && (line[i] != '^'))
+			{
+				mem[i]++;
+			}
+			else if ((mem[i] > 0) && (line[i] == '^'))
+			{
+				if (i > 0)
+				{
+					mem[i - 1] += mem[i];
+				}
+				if (i < line.size())
+				{
+					mem[i + 1] += mem[i];
+				}
+				mem[i] = 0;
+			}
+			i++;
+			while (i < line.size())
+			{
+				std::cout << mem[i];
+				i++;
+			}
+		}
+		i = 0;
+		std::cout << "\n";
+		i++;
+		// dprint("Output: " << line);
+	}
+
+	i = 0;
+	while (i < mem.size())
+	{
+		count += mem[i];
+		i++;
+	}
+	std::cout << "Part two: Split count: " << count << "\n";
 }
 
 void part_one(std::ifstream &file)
