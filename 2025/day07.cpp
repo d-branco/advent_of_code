@@ -5,7 +5,7 @@
 /*   github.com/d-branco                    +#+         +#+      +#+#+#+      */
 /*                                       +#+         +#+              +#+     */
 /*   Created: 2025/12/07 06:23:14      #+#         #+#      +#+        #+#    */
-/*   Updated: 2025/12/07 06:25:09     #########  #########  ###      ###      */
+/*   Updated: 2025/12/07 07:01:10     #########  #########  ###      ###      */
 /*                                                            ########        */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	 main(int argc, char **argv)
 	file.clear();
 	file.seekg(0, std::ios::beg);
 	part_two(file);
+	file.close();
 
 	dprint("");
 	dprint("End of main()");
@@ -52,8 +53,51 @@ void part_two(std::ifstream &file)
 
 void part_one(std::ifstream &file)
 {
-	(void) file;
-	size_t count = 0;
+	size_t		count = 0;
+
+	std::string line;
+	getline(file, line);
+	dprint("Line   Width: " << line.size());
+	std::string mem = line;
+	size_t		i	= 0;
+	while (i < mem.size())
+	{
+		if (mem[i] == 'S')
+		{
+			dprint("Start found!");
+			mem[i] = '|';
+			dprint("");
+			dprint("Output: " << line);
+		}
+		i++;
+	}
+
+	while (getline(file, line))
+	{
+		i = 0;
+		while (i < line.size())
+		{
+			if ((mem[i] == '|') && (line[i] != '^'))
+			{
+				line[i] = '|';
+			}
+			else if ((mem[i] == '|') && (line[i] == '^'))
+			{
+				mem[i] = '.';
+				count++;
+				if (i > 0)
+				{
+					mem[i - 1] = '|';
+				}
+				if (i < line.size())
+				{
+					mem[i + 1] = '|';
+				}
+			}
+			i++;
+		}
+		dprint("Output: " << line);
+	}
 
 	std::cout << "Part one: Split count: " << count << "\n";
 }
